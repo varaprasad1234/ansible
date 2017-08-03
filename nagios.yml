@@ -10,7 +10,6 @@
       name: nagios3
       state: present
 
-  tasks:
    - name: installing passlib python
      package:
       name: python-passlib
