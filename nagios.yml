@@ -1,21 +1,23 @@
 ---
 - hosts: nagios
-  remote_user: ubuntu
   become: yes
-  vars:
-    user_name: nagiosadmin
-  vars_prompt:
-    - name: "new_password"
-      prompt: "Enter New Password"
-      private: yes
-      encrypt: "md5_crypt"
-      confirm: yes
+  remote_user: ubuntu
+  gather_facts: yes
+ 
+  tasks:
+   - name: installing nagios server
+     package:
+      name: nagios3
+      state: present
 
   tasks:
-  - name: installing nagios server
-    package:
-       name: nagios3
-       state: present
-#  tasks:
-  - name: change password for nagios admin
-    user: name={{user_name}} update_password=always password={{new_password}}
+   - name: installing passlib python
+     package:
+      name: python-passlib
+      state: present
+
+   - htpasswd:
+      path: /etc/nagios3/htpasswd.users
+      name: nagiosadmin
+      password: nagiosadmin
+      owner: root
