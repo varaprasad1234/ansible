@@ -4,7 +4,16 @@
   remote_user: ubuntu
   gather_facts: yes
  
+
   tasks:
+   - name: updating the system
+     command: sudo apt-get update -y
+
+   - name: installing python
+     package:
+      name: python
+      state: present
+   
    - name: installing nagios server
      package:
       name: nagios3
@@ -20,3 +29,11 @@
       name: nagiosadmin
       password: nagiosadmin
       owner: root
+
+#   - name: Copying nagios host to server
+#     command: scp /home/ubuntu/playbooks/ansible/google.cfg 54.68.8.24:/etc/nagios3/conf.d
+
+   - name: restarting nagios service
+     command:
+      name: nagios3
+      state: restarted
