@@ -6,9 +6,10 @@
  
 
   tasks:
-   - name: updating the system
-     command: sudo apt-get update -y
-
+   - name: updateing cache
+     apt:
+      update_cache: yes
+ 
    - name: installing python
      package:
       name: python
@@ -30,10 +31,15 @@
       password: nagiosadmin
       owner: root
 
+   - name: Copying file to nagios
+     copy:
+      src: /home/ubuntu/playbooks/ansible/google.cfg
+      dest: /etc/nagios3/conf.d/google.cfg
+
 #   - name: Copying nagios host to server
-#     command: scp /home/ubuntu/playbooks/ansible/google.cfg 54.68.8.24:/etc/nagios3/conf.d
+#     command: scp /home/ubuntu/playbooks/ansible/google.cfg 52.36.99.110:/etc/nagios3/conf.d
 
    - name: restarting nagios service
-     command:
+     service:
       name: nagios3
       state: restarted
